@@ -18,11 +18,8 @@ public class Member {
     @Id
     @GeneratedValue
     private UUID id;
-    @Column (nullable = false)
-    private UUID bookId;
-    @Column (nullable = false)
-    private UUID memberId;
-    private LocalDate borrowDate;
-    @Column(nullable = true)
-    private LocalDate returnDate;
+    private String name;
+    @Column (unique = true, nullable = false)
+    private String email;
+    private LocalDate membershipDate;
 }

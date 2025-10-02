@@ -12,13 +12,16 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table (name = "borrow_records" , uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@Table (name = "borrow_records")
 public class BorrowRecord {
     @Id
     @GeneratedValue
     private UUID id;
-    private String name;
-    @Column (unique = true, nullable = false)
-    private String email;
-    private LocalDate membershipDate;
+    @Column (nullable = false)
+    private UUID bookId;
+    @Column (nullable = false)
+    private UUID memberId;
+    private LocalDate borrowDate;
+    @Column(nullable = true)
+    private LocalDate returnDate;
 }

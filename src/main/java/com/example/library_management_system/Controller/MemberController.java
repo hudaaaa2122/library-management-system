@@ -9,21 +9,23 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping
+@RequestMapping ("/members")
 public class MemberController {
     @Autowired
     private MemberRepository memberRepository;
 
-    @GetMapping ("/members/all")
+    @GetMapping ("/all")
     public List<Member> getAllMembers() {
         return memberRepository.findAll();
     }
-    @GetMapping ("/members/{id}")
+    @GetMapping ("/{id}")
     public Member getMemberById(@PathVariable UUID id) {
-        return memberRepository.findById(id).orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
     }
-    @PostMapping ("/members/create" )
-    public String createMember() {
+    @PostMapping ("/create" )
+    public String createMember(@RequestBody Member member) {
+        memberRepository.save(member);
         return "Member created";
     }
 }
