@@ -15,11 +15,16 @@ import java.util.UUID;
 public class Book {
     @Id
     @GeneratedValue
-    private UUID id;
+
+    private UUID id = UUID.randomUUID();
+    @Column
     private String title;
+    @Column
     private String author;
     @Column (unique = true, nullable = false)
     private String isbn;
+    @Column
     private int publishedYear;
+    @Column
     private int availableCopies;
 }
