@@ -14,9 +14,7 @@ import java.util.UUID;
 @Table (name = "books" , uniqueConstraints = {@UniqueConstraint(columnNames = "isbn")})
 public class Book {
     @Id
-    @GeneratedValue
-
-    private UUID id = UUID.randomUUID();
+    private UUID id;
     @Column
     private String title;
     @Column

@@ -15,7 +15,6 @@ import java.util.UUID;
 @Table (name = "borrow_records")
 public class BorrowRecord {
     @Id
-    @GeneratedValue
     private UUID id;
     @Column (nullable = false)
     private UUID bookId;

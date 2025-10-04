@@ -31,6 +31,7 @@ public class BookController {
     }
     @PostMapping ("/create")
     public String createBook(@RequestBody Book book) {
+        book.setId(UUID.randomUUID());
         bookRepository.save(book);
         return "Book created";
     }
