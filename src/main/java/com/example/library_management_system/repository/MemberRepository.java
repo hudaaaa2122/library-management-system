@@ -1,6 +1,6 @@
-package com.example.library_management_system.Repository;
+package com.example.library_management_system.repository;
 
-import com.example.library_management_system.Entity.Member;
+import com.example.library_management_system.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

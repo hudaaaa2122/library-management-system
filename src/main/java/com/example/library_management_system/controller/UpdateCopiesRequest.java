@@ -1,4 +1,4 @@
-package com.example.library_management_system.Controller;
+package com.example.library_management_system.controller;
 
 public class UpdateCopiesRequest {
     private int availableCopies;

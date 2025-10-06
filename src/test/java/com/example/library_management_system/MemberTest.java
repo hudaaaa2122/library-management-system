@@ -1,7 +1,7 @@
 package com.example.library_management_system;
 
-import com.example.library_management_system.Entity.Member;
-import com.example.library_management_system.Repository.MemberRepository;
+import com.example.library_management_system.entity.Member;
+import com.example.library_management_system.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

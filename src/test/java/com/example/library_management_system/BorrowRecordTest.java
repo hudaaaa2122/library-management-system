@@ -1,11 +1,11 @@
 package com.example.library_management_system;
 
-import com.example.library_management_system.Entity.Book;
-import com.example.library_management_system.Entity.BorrowRecord;
-import com.example.library_management_system.Entity.Member;
-import com.example.library_management_system.Repository.BookRepository;
-import com.example.library_management_system.Repository.BorrowRecordRepository;
-import com.example.library_management_system.Repository.MemberRepository;
+import com.example.library_management_system.entity.Book;
+import com.example.library_management_system.entity.BorrowRecord;
+import com.example.library_management_system.entity.Member;
+import com.example.library_management_system.repository.BookRepository;
+import com.example.library_management_system.repository.BorrowRecordRepository;
+import com.example.library_management_system.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

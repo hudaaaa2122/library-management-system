@@ -1,8 +1,10 @@
-package com.example.library_management_system.Controller;
+package com.example.library_management_system.controller;
 
-import com.example.library_management_system.Entity.Member;
-import com.example.library_management_system.Repository.MemberRepository;
+import com.example.library_management_system.entity.Member;
+import com.example.library_management_system.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +16,7 @@ public class MemberController {
     @Autowired
     private MemberRepository memberRepository;
 
-    @GetMapping ("/all")
+    @GetMapping
     public List<Member> getAllMembers() {
         return memberRepository.findAll();
     }
@@ -23,10 +25,11 @@ public class MemberController {
         return memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
     }
-    @PostMapping ("/create" )
-    public String createMember(@RequestBody Member member) {
+    @PostMapping
+    public ResponseEntity <String> createMember(@RequestBody Member member) {
+        member.setId(UUID.randomUUID());
         memberRepository.save(member);
-        return "Member created";
+        return ResponseEntity.status(HttpStatus.CREATED).body("Member created");
     }
 }
 
