@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -63,7 +64,7 @@ public class BorrowRecordController {
         record.setReturnDate(LocalDate.now());
         borrowRecordRepository.save(record);
         Book book = bookRepository.findById(record.getBookId())
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND ,"Book not found"));
         book.setAvailableCopies(book.getAvailableCopies() + 1);
         bookRepository.save(book);
         return ResponseEntity.status(HttpStatus.CREATED).body("Book returned successfully!") ;
@@ -75,6 +76,6 @@ public class BorrowRecordController {
     @GetMapping("/{id}")
     public Object getBorrowRecordById(@PathVariable UUID id) {
         return borrowRecordRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Borrow record not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND ,"Borrow record not found with id: " + id));
     }
 }

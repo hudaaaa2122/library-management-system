@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,7 +32,7 @@ public class BookController {
     @GetMapping ("/{title}")
     public Book getBookByTitle(@PathVariable String title) {
         return bookRepository.findAll().stream().filter(book -> book.getTitle().equals(title)).findFirst()
-                .orElseThrow(() -> new RuntimeException("Book not found with title: " + title));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND , "Book not found with title: " + title));
     }
     @PostMapping
     public ResponseEntity <String> createBook(@RequestBody Book book) {
@@ -42,7 +43,7 @@ public class BookController {
     @PatchMapping ("/{id}/copies")
     public Book updateBookCopies(@PathVariable UUID id, @RequestBody UpdateCopiesRequest request) {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Book not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND ,"Book not found with id: " + id));
         book.setAvailableCopies(request.getAvailableCopies());
         return bookRepository.save(book);
     }
