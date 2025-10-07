@@ -1,0 +1,48 @@
+
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Book",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The title of the book"
+    },
+    "author": {
+      "type": "string",
+      "description": "The author of the book"
+    },
+    "isbn": {
+      "type": "string",
+      "description": "The ISBN number of the book"
+    },
+    "publishedYear": {
+      "type": "integer",
+      "description": "The year the book was published"
+    },
+    "availableCopies": {
+      "type": "integer",
+      "description": "The number of available copies in the library"
+    }
+  },
+  "required": ["title", "author", "isbn", "publishedYear", "availableCopies"],
+
+
+    "examples": [
+        {
+        "title": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "isbn": "978-0-06-112008-4",
+        "publishedYear": 1960,
+        "availableCopies": 3
+        },
+        {
+        "title": "1984",
+        "author": "George Orwell",
+        "isbn": "978-0-452-28423-4",
+        "publishedYear": 1949,
+        "availableCopies": 5
+        }
+    ]
+}
