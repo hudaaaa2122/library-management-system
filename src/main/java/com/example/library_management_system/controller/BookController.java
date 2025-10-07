@@ -1,13 +1,12 @@
 package com.example.library_management_system.controller;
 
+import com.example.library_management_system.dto.UpdateCopiesRequest;
 import com.example.library_management_system.entity.Book;
-import com.example.library_management_system.repository.BookRepository;
+import com.example.library_management_system.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,33 +17,36 @@ import java.util.UUID;
 public class BookController {
 
     @Autowired
-    private BookRepository bookRepository;
+    private BookService bookService;
+
+    public BookController() {
+    }
 
     @GetMapping
     public List <Book> getAllBooks() {
-        return bookRepository.findAll();
+        return bookService.getAllBooks();
     }
+
     @DeleteMapping ("/{id}")
-    public ResponseEntity <String> deleteBook(@PathVariable UUID id) {
-        bookRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Book deleted");
+    public String deleteBook(@PathVariable UUID id, BookService bookService) {
+      bookService.deleteBook(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Book deleted").toString();
     }
+
     @GetMapping ("/{title}")
     public Book getBookByTitle(@PathVariable String title) {
-        return bookRepository.findAll().stream().filter(book -> book.getTitle().equals(title)).findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND , "Book not found with title: " + title));
+
+        return bookService. getBookByTitle(title);
     }
+
     @PostMapping
     public ResponseEntity <String> createBook(@RequestBody Book book) {
-        book.setId(UUID.randomUUID());
-        bookRepository.save(book);
-        return ResponseEntity.status(HttpStatus.OK).body("Book created");
+
+        return bookService.createBook(book);
     }
+
     @PatchMapping ("/{id}/copies")
     public Book updateBookCopies(@PathVariable UUID id, @RequestBody UpdateCopiesRequest request) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND ,"Book not found with id: " + id));
-        book.setAvailableCopies(request.getAvailableCopies());
-        return bookRepository.save(book);
+        return bookService.updateBookCopies(id, request);
     }
 }

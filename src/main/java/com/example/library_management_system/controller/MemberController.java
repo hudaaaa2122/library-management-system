@@ -2,6 +2,7 @@ package com.example.library_management_system.controller;
 
 import com.example.library_management_system.entity.Member;
 import com.example.library_management_system.repository.MemberRepository;
+import com.example.library_management_system.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
@@ -15,23 +16,25 @@ import java.util.UUID;
 @RestController
 @RequestMapping ("/members")
 public class MemberController {
+
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberService memberService;
+
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     @GetMapping
     public List<Member> getAllMembers() {
-        return memberRepository.findAll();
+        return memberService.getAllMembers();
     }
     @GetMapping ("/{id}")
     public Member getMemberById(@PathVariable UUID id) {
-        return memberRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found with id: " + id));
+        return memberService.getMemberById(id);
     }
     @PostMapping
     public ResponseEntity <String> createMember(@RequestBody Member member) {
-        member.setId(UUID.randomUUID());
-        memberRepository.save(member);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Member created");
+        return memberService.createMember(member);
     }
 }
 
