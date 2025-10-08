@@ -17,8 +17,12 @@ import java.util.UUID;
 @Service
 public class MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+
+    private final MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
 
     public List<Member> getAllMembers() {

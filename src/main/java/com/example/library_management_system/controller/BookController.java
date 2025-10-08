@@ -33,15 +33,13 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body("Book deleted").toString();
     }
 
-    @GetMapping ("/{title}")
+    @GetMapping ("/title/{title}")
     public Book getBookByTitle(@PathVariable String title) {
-
         return bookService. getBookByTitle(title);
     }
 
     @PostMapping
     public ResponseEntity <String> createBook(@RequestBody Book book) {
-
         return bookService.createBook(book);
     }
 

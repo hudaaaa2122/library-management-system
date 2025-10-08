@@ -22,14 +22,20 @@ import java.util.UUID;
 @Service
 public class BorrowRecordService {
 
-    @Autowired
-    private BorrowRecordRepository borrowRecordRepository;
 
-    @Autowired
-    private BookRepository bookRepository;
+    private final BorrowRecordRepository borrowRecordRepository;
 
-    @Autowired
-    private MemberRepository memberRepository;
+
+    private final BookRepository bookRepository;
+
+
+    private final MemberRepository memberRepository;
+
+    public BorrowRecordService(BorrowRecordRepository borrowRecordRepository, BookRepository bookRepository, MemberRepository memberRepository) {
+        this.borrowRecordRepository = borrowRecordRepository;
+        this.bookRepository = bookRepository;
+        this.memberRepository = memberRepository;
+    }
 
     public ResponseEntity<String> borrowBook(@RequestParam UUID bookId, @RequestParam UUID memberId) {
 

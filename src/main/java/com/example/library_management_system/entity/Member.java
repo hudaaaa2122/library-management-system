@@ -17,8 +17,10 @@ import java.util.UUID;
 public class Member {
     @Id
     private UUID id;
+    @Column
     private String name;
     @Column (unique = true, nullable = false)
     private String email;
+    @Column
     private LocalDate membershipDate;
 }
