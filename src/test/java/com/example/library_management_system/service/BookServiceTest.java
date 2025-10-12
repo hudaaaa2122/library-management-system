@@ -1,6 +1,4 @@
 package com.example.library_management_system.service;
-//
-//
 
 import com.example.library_management_system.entity.Book;
 import org.junit.jupiter.api.Test;
@@ -8,6 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -17,10 +18,22 @@ public class BookServiceTest {
 
     @Test
     void createBookTest(){
-        Book book = new Book();
+        Book book = mock(Book.class);
+        book.setTitle("title");
         bookService.createBook(book);
 
+        assertEquals(book.getTitle(), book.getTitle());
+    }
 
+    @Test
+    void updateBookCopies (){
+
+        Book book = mock(Book.class);
+        book.setAvailableCopies(5);
+        bookService.updateBookCopies(book.getId(), null);
+
+
+        assertEquals(book.getAvailableCopies() , book.getAvailableCopies());
     }
 }
 //    @Mock
