@@ -27,17 +27,23 @@ public class BookServiceTest {
 
     @Test
     void testGetBookByTitle_UsingSpy() {
-        BookRepository realRepo = mock(BookRepository.class);
-        when(realRepo.findAll()).thenReturn(List.of(new Book(UUID.randomUUID(), "Spy Title", "Spy Author", "654", 2023, 6)));
-        BookService spyService = spy(new BookService(realRepo));
+        //given
+        BookRepository spyRepo = mock(BookRepository.class);
+        when(spyRepo.findAll()).thenReturn(List.of(new Book(UUID.randomUUID(), "Spy Title", "Spy Author", "654", 2023, 6)));
+        //when
+        BookService spyService = spy(new BookService(spyRepo));
         Book result = spyService.getBookByTitle("Spy Title");
+        //then
         assertThat(result.getTitle()).isEqualTo("Spy Title");
     }
 
     @Test
     void testCreateBook_UsingMock() {
+        //given
         Book mockBook = new Book(UUID.randomUUID(), "Mock Title", "Mock Author", "ISBN123", 2023, 5);
+        //when
         ResponseEntity<String> response = bookService.createBook(mockBook);
+        //then
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
     }
 }
