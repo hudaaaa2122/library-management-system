@@ -7,116 +7,76 @@ import org.springframework.data.repository.query.FluentQuery;
 import java.util.*;
 import java.util.function.Function;
 
-public abstract class FakeMemberRepository implements MemberRepository {
-
-    private final Map<UUID, Member> fakeDatabase = new HashMap<>();
+public class FakeMemberRepository implements MemberRepository {
+    private final Map<UUID, Member> db = new HashMap<>();
 
     @Override
     public Optional<Member> findById(UUID id) {
-        return Optional.ofNullable(fakeDatabase.get(id));
+        return Optional.ofNullable(db.get(id));
+    }
+
+    @Override
+    public <S extends Member> S save(S entity) {
+        db.put(entity.getId(), entity);
+        return entity;
+    }
+
+    @Override
+    public List<Member> findAll() {
+        return new ArrayList<>(db.values());
     }
 
     @Override
     public List<Member> findAllById(Iterable<UUID> ids) {
         List<Member> result = new ArrayList<>();
         for (UUID id : ids) {
-            if (fakeDatabase.containsKey(id)) {
-                result.add(fakeDatabase.get(id));
-            }
+            if (db.containsKey(id)) result.add(db.get(id));
         }
         return result;
     }
 
     @Override
-    public <S extends Member> S save(S entity) {
-        fakeDatabase.put(entity.getId(), entity);
-        return entity;
-    }
+    public void deleteById(UUID id) { db.remove(id); }
 
     @Override
-    public List<Member> findAll() {
-        return new ArrayList<>(fakeDatabase.values());
-    }
+    public long count() { return db.size(); }
+
+    @Override public void deleteAll() { db.clear(); }
+    @Override public boolean existsById(UUID id) { return db.containsKey(id); }
+
+    // implement the rest with safe defaults to satisfy compiler:
+    @Override public List<Member> findAll(Sort sort) { return List.of(); }
+    @Override public Page<Member> findAll(Pageable pageable) { return Page.empty(); }
+    @Override public <S extends Member> List<S> saveAll(Iterable<S> entities) { return List.of(); }
+    @Override public void flush() {}
+    @Override public <S extends Member> S saveAndFlush(S entity) { return save(entity); }
 
     @Override
-    public void deleteById(UUID id) {
-        fakeDatabase.remove(id);
-    }
-
-    @Override
-    public void deleteAllByIdInBatch(Iterable<UUID> uuids) {
-        for (UUID id : uuids) {
-            fakeDatabase.remove(id);
-        }
-    }
-
-    // --- Unused methods (just dummy implementations) ---
-
-    @Override
-    public List<Member> findAll(Sort sort) {
+    public <S extends Member> List<S> saveAllAndFlush(Iterable<S> entities) {
         return List.of();
     }
 
-    @Override
-    public Page<Member> findAll(Pageable pageable) {
-        return Page.empty();
-    }
+    @Override public void deleteAllInBatch() {}
+    @Override public Member getOne(UUID uuid) { return db.get(uuid); }
+    @Override public Member getById(UUID uuid) { return db.get(uuid); }
+    @Override public Member getReferenceById(UUID uuid) { return db.get(uuid); }
+    @Override public void delete(Member entity) { db.remove(entity.getId()); }
 
     @Override
-    public boolean existsById(UUID id) {
-        return fakeDatabase.containsKey(id);
+    public void deleteAllById(Iterable<? extends UUID> uuids) {
+
     }
 
-    @Override
-    public long count() {
-        return fakeDatabase.size();
+    @Override public void deleteAll(Iterable<? extends Member> entities) {
+        for (Member m : entities) db.remove(m.getId());
     }
-
-    @Override
-    public void delete(Member entity) {
-    }
-
-    @Override
-    public void deleteAll() {
-    }
-
-    @Override
-    public void flush() {
-    }
-
-    @Override
-    public <S extends Member> S saveAndFlush(S entity) {
-        return entity;
-    }
-
-    @Override
-    public void deleteAllInBatch() {
-    }
-
-    @Override
-    public void deleteAllInBatch(Iterable<Member> entities) {
-    }
-
-    @Override
-    public Member getOne(UUID uuid) {
-        return fakeDatabase.get(uuid);
-    }
-
-    @Override
-    public Member getById(UUID uuid) {
-        return fakeDatabase.get(uuid);
-    }
-
-    @Override
-    public Member getReferenceById(UUID uuid) {
-        return fakeDatabase.get(uuid);
-    }
-    @Override
-    public <S extends Member> List<S> saveAll(Iterable<S> entities) {
-        List<S> result = new ArrayList<>();
-        for (S entity : entities) {
-            fakeDatabase.put(entity.getId(), entity);
-            result.add(entity);
-        }
-        return result;
-    }}
+    @Override public void deleteAllInBatch(Iterable<Member> entities) { deleteAll(entities); }
+    @Override public void deleteAllByIdInBatch(Iterable<UUID> uuids) { for (UUID id : uuids) db.remove(id); }
+    @Override public <S extends Member> Optional<S> findOne(Example<S> example) { return Optional.empty(); }
+    @Override public <S extends Member> List<S> findAll(Example<S> example) { return List.of(); }
+    @Override public <S extends Member> List<S> findAll(Example<S> example, Sort sort) { return List.of(); }
+    @Override public <S extends Member> Page<S> findAll(Example<S> example, Pageable pageable) { return Page.empty(); }
+    @Override public <S extends Member> long count(Example<S> example) { return 0; }
+    @Override public <S extends Member> boolean exists(Example<S> example) { return false; }
+    @Override public <S extends Member, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) { return null; }
+}
