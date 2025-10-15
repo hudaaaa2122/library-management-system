@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
 
@@ -30,6 +30,22 @@ public class BookServiceTest {
 
     @InjectMocks
     private BookService bookService;
+
+
+    @Test
+    void testgetAllBooks_UsingMock() {
+        //given
+        when(bookRepository.findAll()).thenReturn(List.of(
+                new Book(UUID.randomUUID(), "Mock Title1", "Mock Author1", "ISBN123", 2023, 5),
+                new Book(UUID.randomUUID(), "Mock Title2", "Mock Author2", "ISBN124", 2022, 3)
+        ));
+        //when
+
+        List<Book> books = bookService.getAllBooks();
+        //then
+        assertThat(books.size()).isEqualTo(2);
+    }
+
 
     @Test
     void testGetBookByTitle_UsingSpy() {
@@ -53,19 +69,7 @@ public class BookServiceTest {
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
     }
 
-    @Test
-    void testgetAllBooks_UsingMock() {
-        //given
-        when(bookRepository.findAll()).thenReturn(List.of(
-                new Book(UUID.randomUUID(), "Mock Title1", "Mock Author1", "ISBN123", 2023, 5),
-                new Book(UUID.randomUUID(), "Mock Title2", "Mock Author2", "ISBN124", 2022, 3)
-        ));
-        //when
-        List<Book> books = bookService.getAllBooks();
-        //then
-        assertThat(books).isNotNull();
-        assertThat(books.size()).isEqualTo(2);
-    }
+
 
 }
 class BookServiceFakeTest {

@@ -1,19 +1,47 @@
 package com.example.library_management_system.service;
 
+import com.example.library_management_system.entity.Book;
 import com.example.library_management_system.entity.Member;
 import com.example.library_management_system.repository.FakeMemberRepository;
 import com.example.library_management_system.repository.MemberRepository;
 import com.example.library_management_system.repository.MemberRepositoryStubBase;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
+
+    @Mock
+    private MemberRepository memberRepository;
+
+    @InjectMocks
+    private MemberService memberService;
+
+    @Test
+    void testgetAllMembers_UsingMock() {
+        //given
+        when(memberRepository.findAll()).thenReturn(List.of(
+                new Member(UUID.randomUUID(), " Mock User1", " mockuser1@gmail.com" , LocalDate.now()),
+                new Member(UUID.randomUUID(), " Mock User2", "mockuser2@gmal.com ", LocalDate.now())
+    ));
+        //when
+        List<Member> members = memberService.getAllMembers();
+        //then
+        assertThat(members.size()).isEqualTo(2);
+    }
 
         @Test
         void testGetMemberById_UsingStub() {
@@ -33,7 +61,6 @@ class MemberServiceTest {
             assertEquals("Stub User", actual.getName());
         }
     }
-
 
     class MemberServiceFakeTest {
         @Test

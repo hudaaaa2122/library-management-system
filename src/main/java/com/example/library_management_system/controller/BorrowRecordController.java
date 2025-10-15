@@ -46,6 +46,7 @@ public class BorrowRecordController {
     public Object getAllBorrowRecords() {
         return borrowRecordService.getAllBorrowRecords();
     }
+
     @GetMapping("/{id}")
     public Object getBorrowRecordById(@PathVariable UUID id) {
         return borrowRecordService.getBorrowRecordById(id);

@@ -7,7 +7,6 @@ import com.example.library_management_system.entity.Member;
 import com.example.library_management_system.repository.BookRepository;
 import com.example.library_management_system.repository.BorrowRecordRepository;
 import com.example.library_management_system.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -76,17 +76,17 @@ public class BorrowRecordService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND ,"Book not found"));
         book.setAvailableCopies(book.getAvailableCopies() + 1);
         bookRepository.save(book);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Book returned successfully!") ;
+        return ResponseEntity.status(HttpStatus.OK).body("Book returned successfully!") ;
     }
 
 
-    public Object getAllBorrowRecords() {
+    public List<BorrowRecord> getAllBorrowRecords() {
         return borrowRecordRepository.findAll();
     }
 
 
-    public Object getBorrowRecordById(@PathVariable UUID id) {
+    public BorrowRecord getBorrowRecordById(@PathVariable UUID id) {
         return borrowRecordRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND ,"Borrow record not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Borrow record not found with id: " + id));
     }
 }
